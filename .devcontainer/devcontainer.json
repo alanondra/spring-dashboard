@@ -1,0 +1,42 @@
+{
+	"name": "Debian",
+	"build": {
+		"dockerfile": "./dockerfile",
+		"args": {
+			"JDK_VERSION_MAJOR": "22",
+			"JDK_VERSION_MINOR": "0",
+			"JDK_VERSION_PATCH": "2",
+			"JDK_VERSION_BUILD": "9",
+			"GRADLE_VERSION": "8.9"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"java.import.maven.enabled": false,
+				"maven.showInExplorerContextMenu": false,
+				"java.import.gradle.enabled": true,
+				"java.import.gradle.wrapper.enabled": true,
+				"spring.initializr.defaultLanguage": "Java",
+				"spring.initializr.defaultPackaging": "JAR",
+				"spring.initializr.defaultGroupId": "com.aondra"
+			}
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"upgradePackages": true,
+			"nonFreePackages": true
+		},
+		"ghcr.io/devcontainers-contrib/features/apt-packages:1":{
+			"clean_ppas": true,
+			"packages": "build-essential gnupg2 ca-certificates lsb-release software-properties-common unzip apt-transport-https iptables"
+		},
+		"ghcr.io/guiyomh/features/vim:0": {},
+		"ghcr.io/devcontainers-contrib/features/fish-apt-get:1": {},
+		"ghcr.io/devcontainers-contrib/features/curl-apt-get:1":{},
+		"ghcr.io/devcontainers-contrib/features/wget-apt-get:1":{},
+		"ghcr.io/devcontainers-contrib/features/gh-cli:1": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	}
+}
