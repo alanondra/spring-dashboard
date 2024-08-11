@@ -8,10 +8,35 @@ ARG JDK_VERSION_BUILD=1
 ARG GRADLE_VERSION=8.9
 
 # Install JDK
-RUN wget https://github.com/adoptium/temurin22-binaries/releases/download/jdk-${JDK_VERSION_MAJOR}.${JDK_VERSION_MINOR}.${JDK_VERSION_PATCH}%2B${JDK_VERSION_BUILD}/OpenJDK${JDK_VERSION_MAJOR}U-jdk_x64_linux_hotspot_${JDK_VERSION_MAJOR}.${JDK_VERSION_MINOR}.${JDK_VERSION_PATCH}_${JDK_VERSION_BUILD}.tar.gz -O /tmp/openjdk.tar.gz;\
+RUN cd /tmp;\
+    BASE_URL="https://github.com/adoptium/temurin22-binaries/releases/download/jdk-${JDK_VERSION_MAJOR}.${JDK_VERSION_MINOR}.${JDK_VERSION_PATCH}%2B${JDK_VERSION_BUILD}";\
+    TAR_FILE="OpenJDK${JDK_VERSION_MAJOR}U-jdk_x64_linux_hotspot_${JDK_VERSION_MAJOR}.${JDK_VERSION_MINOR}.${JDK_VERSION_PATCH}_${JDK_VERSION_BUILD}.tar.gz";\
+    SIG_FILE="${TAR_FILE}.sig";\
+    CHECKSUM_FILE="${TAR_FILE}.sha256.txt";\
+    \
+    wget ${BASE_URL}/${TAR_FILE} -O ${TAR_FILE}\
+        || { echo "Failed to download OpenJDK\nURL: ${BASE_URL}/${TAR_FILE}" && exit 1; };\
+    wget ${BASE_URL}/${SIG_FILE} -O ${SIG_FILE}\
+        || { echo "Failed to download signature\nURL: ${BASE_URL}/${SIG_FILE}" && exit 1; };\
+    wget ${BASE_URL}/${CHECKSUM_FILE} -O ${CHECKSUM_FILE}\
+        || { echo "Failed to download checksum\nURL: ${BASE_URL}/${CHECKSUM_FILE}" && exit 1; };\
+    \
+    sha256sum -c ${CHECKSUM_FILE}\
+        || { echo 'Checksum verification failed' && exit 1; };\
+    \
+    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/trusted.gpg.d/adoptium.gpg\
+        || { echo 'Failed to download and import GPG key' && exit 1; };\
+    \
+    gpg --import /etc/apt/trusted.gpg.d/adoptium.gpg;\
+    if ! gpg --list-keys | grep -iq "adoptium"; then\
+        echo 'GPG key import failed: Adoptium key not found!' && exit 1;\
+    fi;\
+    gpg --verify ${SIG_FILE} ${TAR_FILE}\
+        || { echo 'GPG signature verification failed' && exit 1; };\
+    \
     mkdir -p /usr/local/lib/openjdk/${JDK_VERSION_MAJOR};\
-    tar -xzf /tmp/openjdk.tar.gz -C /usr/local/lib/openjdk/${JDK_VERSION_MAJOR} --strip-components=1;\
-    rm /tmp/openjdk.tar.gz;\
+    tar -xzf ${TAR_FILE} -C /usr/local/lib/openjdk/${JDK_VERSION_MAJOR} --strip-components=1;\
+    rm ${TAR_FILE} ${SIG_FILE} ${CHECKSUM_FILE};\
     ln -s /usr/local/lib/openjdk/${JDK_VERSION_MAJOR}/bin/java /usr/bin/java
 
 ENV JAVA_HOME=/usr/local/lib/openjdk/$JDK_VERSION
