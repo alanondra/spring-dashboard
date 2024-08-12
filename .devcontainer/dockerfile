@@ -39,7 +39,7 @@ RUN cd /tmp;\
     rm ${TAR_FILE} ${SIG_FILE} ${CHECKSUM_FILE};\
     ln -s /usr/local/lib/openjdk/${JDK_VERSION_MAJOR}/bin/java /usr/bin/java
 
-ENV JAVA_HOME=/usr/local/lib/openjdk/$JDK_VERSION
+ENV JAVA_HOME=/usr/local/lib/openjdk/$JDK_VERSION_MAJOR
 ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Install Gradle
