@@ -1,0 +1,16 @@
+{
+	"recommendations": [
+		"ms-vscode.anycode-java",
+		"pflannery.vscode-versionlens",
+		"christian-kohler.path-intellisense",
+		"adrianwilczynski.toggle-hidden",
+		"esbenp.prettier-vscode",
+		"wayou.vscode-todo-highlight",
+		"jeff-hykin.better-dockerfile-syntax",
+		"p1c2u.docker-compose",
+		"ms-vscode.anycode-typescript",
+		"dbaeumer.vscode-eslint",
+		"ahmadalli.vscode-nginx-conf",
+		"DotJoshJohnson.xml"
+	]
+}
