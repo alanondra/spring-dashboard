@@ -10,6 +10,9 @@
 			"GRADLE_VERSION": "8.9"
 		}
 	},
+	"forwardPorts": [
+		8080
+	],
 	"customizations": {
 		"vscode": {
 			"settings": {
