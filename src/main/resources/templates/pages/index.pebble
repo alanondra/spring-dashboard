@@ -1,0 +1,12 @@
+{% extends "layouts/main" %}
+
+{% block title %}Index - {{ parent() }}{% endblock %}
+
+{% block content %}
+			<section class="foo">
+				<h2>Index</h2>
+				<p>
+					Index page content.
+				</p>
+			</section>
+{% endblock %}

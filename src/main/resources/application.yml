@@ -9,6 +9,10 @@ logging:
     # OFF/ TRACE / DEBUG / INFO / WARN / ERROR / FATAL
     root: ${SPRING_LOG_LEVEL:ERROR}
 
+pebble:
+  suffix: .pebble
+  cache: false
+
 ---
 spring:
   config:
@@ -28,3 +32,6 @@ spring:
 
 server:
   port: 80
+
+pebble:
+  cache: true
