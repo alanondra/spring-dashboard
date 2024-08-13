@@ -11,14 +11,20 @@ logging:
 
 ---
 spring:
-  profiles: development
+  config:
+    activate:
+      on-profile:
+      - development
 
 server:
   port: ${FORWARD_HTTP_PORT:8080}
 
 ---
 spring:
-  profiles: production
+  config:
+    activate:
+      on-profile:
+      - production
 
 server:
   port: 80
