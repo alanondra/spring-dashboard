@@ -1,3 +1,4 @@
+.apt_generated/
 .gradle/
 .idea/
 .nb-gradle/
@@ -13,11 +14,11 @@ nbdist/
 nbproject/private/
 node_modules/
 out/
-.apt_generated/
 !**/src/main/**/build/
 !**/src/test/**/build/
 !**/src/main/**/out/
 !**/src/test/**/out/
+src/main/resources/static/assets/build
 .classpath
 .env
 .factorypath
