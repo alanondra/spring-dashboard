@@ -70,7 +70,16 @@ module.exports = (env, argv) => {
 					fileName: path.relative(buildPath, manifestPath),
 					publicPath: publicPrefix,
 					seed: sharedManifest,
-					filter: (file) => /\.css$/.test(file.name)
+					filter: (file) => /\.css$/.test(file.name),
+					generate: (seed, files) => {
+						const manifest = files.reduce((manifest, file) => {
+							const directory = file.path.substring(0, file.path.lastIndexOf('/'));
+							const name = `${directory}/${file.name}`;
+							manifest[name] = file.path;
+							return manifest;
+						}, seed);
+						return manifest;
+					}
 				})
 			],
 
@@ -160,7 +169,16 @@ module.exports = (env, argv) => {
 					fileName: path.relative(buildPath, manifestPath),
 					publicPath: publicPrefix,
 					seed: sharedManifest,
-					filter: (file) => /\.js$/.test(file.name)
+					filter: (file) => /\.js$/.test(file.name),
+					generate: (seed, files) => {
+						const manifest = files.reduce((manifest, file) => {
+							const directory = file.path.substring(0, file.path.lastIndexOf('/'));
+							const name = `${directory}/${file.name}`;
+							manifest[name] = file.path;
+							return manifest;
+						}, seed);
+						return manifest;
+					}
 				})
 			],
 
