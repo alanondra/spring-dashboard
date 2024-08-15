@@ -1,5 +1,6 @@
 package com.aondra.dashboard.services;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.springframework.stereotype.Service;
@@ -126,8 +127,10 @@ public class MailService
 			});
 
 			return mimeMessage;
+		} catch (IOException e) {
+			throw new MailerException("Failed to format MimeMessage or handle attachments.", e);
 		} catch (MessagingException e) {
-			throw new MailerException("Failed to create MimeMessage.");
+			throw new MailerException("Failed to create MimeMessage.", e);
 		}
 	}
 }

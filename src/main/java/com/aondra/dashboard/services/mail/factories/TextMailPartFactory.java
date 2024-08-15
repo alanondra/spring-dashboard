@@ -5,11 +5,11 @@ import jakarta.mail.internet.MimeBodyPart;
 
 public class TextMailPartFactory
 {
-	public MimeBodyPart create(String htmlContent) throws MessagingException
+	public MimeBodyPart create(String textContent) throws MessagingException
 	{
 		MimeBodyPart part = new MimeBodyPart();
 
-		part.setText(htmlContent, "utf-8");
+		part.setText(textContent, "utf-8");
 
 		return part;
 	}

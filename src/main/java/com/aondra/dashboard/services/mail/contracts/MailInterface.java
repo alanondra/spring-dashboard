@@ -1,6 +1,7 @@
 package com.aondra.dashboard.services.mail.contracts;
 
 import java.util.Optional;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -22,5 +23,5 @@ public interface MailInterface
 
 	Optional<String> getSubject();
 
-	List<MimeBodyPart> getParts(MailPartFactorySet partFactories) throws MessagingException;
+	List<MimeBodyPart> getParts(MailPartFactorySet partFactories) throws IOException, MessagingException;
 }
