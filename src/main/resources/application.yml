@@ -3,6 +3,17 @@ spring:
     active: development
   application:
     name: Dashboard
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: ${MAIL_TLS:true}
 
 logging:
   level:
@@ -13,12 +24,24 @@ pebble:
   suffix: .pebble
   cache: false
 
+mail:
+  webmaster:
+    name: ${WEBMASTER_NAME}
+    email: ${WEBMASTER_EMAIL}
+  mailer:
+    name: ${MAILER_NAME}
+    email: ${MAILER_EMAIL}
+
 ---
 spring:
   config:
     activate:
       on-profile:
       - development
+  mail:
+    properties:
+      mail:
+        debug: true
 
 server:
   port: ${FORWARD_HTTP_PORT:8080}
