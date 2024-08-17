@@ -13,6 +13,8 @@
 	"forwardPorts": [
 		8080
 	],
+	"postStartCommand": "./.devcontainer/sh/start.fish",
+	"postCreateCommand": "./.devcontainer/sh/create.fish",
 	"customizations": {
 		"vscode": {
 			"settings": {
