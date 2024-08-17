@@ -16,25 +16,25 @@ import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 
 import com.aondra.dashboard.exceptions.UserException;
-import com.aondra.dashboard.services.mail.MailPartFactorySet;
 import com.aondra.dashboard.services.mail.contracts.MailInterface;
 import com.aondra.dashboard.services.mail.entities.MailerDaemon;
 import com.aondra.dashboard.services.mail.exceptions.MailerException;
+import com.aondra.dashboard.services.mail.templating.factories.MailPartFactory;
 
 @Service
 public class MailService
 {
 	protected JavaMailSender mailSender;
-	protected MailPartFactorySet mailPartFactories;
+	protected MailPartFactory mailPartFactory;
 	protected MailerDaemon mailerDaemon;
 
 	public MailService(
 		JavaMailSender mailSender,
-		MailPartFactorySet mailPartFactories,
+		MailPartFactory mailPartFactory,
 		MailerDaemon mailerDaemon
 	) {
 		this.mailSender = mailSender;
-		this.mailPartFactories = mailPartFactories;
+		this.mailPartFactory = mailPartFactory;
 		this.mailerDaemon = mailerDaemon;
 	}
 
@@ -43,9 +43,9 @@ public class MailService
 		return this.mailSender;
 	}
 
-	public MailPartFactorySet getMailPartFactories()
+	public MailPartFactory getmailPartFactory()
 	{
-		return this.mailPartFactories;
+		return this.mailPartFactory;
 	}
 
 	public MailerDaemon getMailerDaemon()
@@ -83,21 +83,30 @@ public class MailService
 				try {
 					helper.setReplyTo(sender);
 				} catch (MessagingException e) {
-					throw new UserException("Invalid sender.", e);
+					throw new UserException(
+						String.format("Invalid sender %s.", sender.toString()),
+						e
+					);
 				}
 			});
 
 			try {
 				helper.setTo(mail.getRecipient());
 			} catch (UnsupportedEncodingException e) {
-				throw new UserException("Invalid recipient.", e);
+				throw new UserException(
+					String.format("Invalid recipient %s.", mail.getRecipient().toString()),
+					e
+				);
 			}
 
 			mail.getCcs().forEach((InternetAddress cc) -> {
 				try {
 					helper.addCc(cc);
 				} catch (MessagingException e) {
-					throw new UserException("Invalid carbon copy recipient.", e);
+					throw new UserException(
+						String.format("Invalid carbon copy recipient %s.", cc.toString()),
+						e
+					);
 				}
 			});
 
@@ -105,7 +114,10 @@ public class MailService
 				try {
 					helper.addBcc(bcc);
 				} catch (MessagingException e) {
-					throw new UserException("Invalid blind carbon copy recipient.", e);
+					throw new UserException(
+						String.format("Invalid blind carbon copy recipient %s.", bcc.toString()),
+						e
+					);
 				}
 			});
 
@@ -113,12 +125,15 @@ public class MailService
 				try {
 					helper.setSubject(subject);
 				} catch (MessagingException e) {
-					throw new UserException("Invalid subject.", e);
+					throw new UserException(
+						String.format("Invalid subject.", subject),
+						e
+					);
 				}
 			});
 
 			// Add parts
-			mail.getParts(this.mailPartFactories).forEach((MimeBodyPart part) -> {
+			mail.getParts(this.mailPartFactory).forEach((MimeBodyPart part) -> {
 				try {
 					helper.getMimeMultipart().addBodyPart(part);
 				} catch (MessagingException e) {

@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.aondra.dashboard.services.mail.MailPartFactorySet;
 import com.aondra.dashboard.services.mail.contracts.MailInterface;
-import com.aondra.dashboard.services.mail.factories.AttachmentMailPartFactory;
-import com.aondra.dashboard.services.mail.factories.HtmlMailPartFactory;
-import com.aondra.dashboard.services.mail.factories.TextMailPartFactory;
+import com.aondra.dashboard.services.mail.templating.factories.MailPartFactory;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -41,34 +38,34 @@ public abstract class AbstractMail implements MailInterface
 	}
 
 	@Override
-	public List<MimeBodyPart> getParts(MailPartFactorySet partFactories) throws IOException, MessagingException
+	public List<MimeBodyPart> getParts(MailPartFactory mailPartFactory) throws IOException, MessagingException
 	{
 		List<MimeBodyPart> parts = new ArrayList<>();
 
-		Optional<MimeBodyPart> text = this.getText(partFactories.text());
-		Optional<MimeBodyPart> html = this.getHtml(partFactories.html());
+		Optional<MimeBodyPart> text = this.getText(mailPartFactory);
+		Optional<MimeBodyPart> html = this.getHtml(mailPartFactory);
 
-		List<MimeBodyPart> attachments = this.getAttachments(partFactories.attachment());
+		List<MimeBodyPart> attachments = this.getAttachments(mailPartFactory);
 
 		text.ifPresent(parts::add);
 		html.ifPresent(parts::add);
 
-		attachments.forEach((MimeBodyPart attachment) -> { parts.add(attachment); });
+		parts.addAll(attachments);
 
 		return parts;
 	}
 
-	protected Optional<MimeBodyPart> getText(TextMailPartFactory factory) throws MessagingException
+	protected Optional<MimeBodyPart> getText(MailPartFactory mailPartFactory) throws MessagingException
 	{
 		return Optional.empty();
 	}
 
-	protected Optional<MimeBodyPart> getHtml(HtmlMailPartFactory factory) throws IOException, MessagingException
+	protected Optional<MimeBodyPart> getHtml(MailPartFactory mailPartFactory) throws IOException, MessagingException
 	{
 		return Optional.empty();
 	}
 
-	protected List<MimeBodyPart> getAttachments(AttachmentMailPartFactory factory)
+	protected List<MimeBodyPart> getAttachments(MailPartFactory mailPartFactory)
 	{
 		return List.of();
 	}

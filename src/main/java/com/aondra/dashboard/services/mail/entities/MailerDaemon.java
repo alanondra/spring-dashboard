@@ -64,6 +64,10 @@ public final class MailerDaemon
 	@Override
 	public String toString()
 	{
-		return String.format("\"%s\" <%s>", this.getName(), this.getEmail());
+		return String.format(
+			"\"%s\" <%s>",
+			this.getName(),
+			this.getEmail()
+		);
 	}
 }

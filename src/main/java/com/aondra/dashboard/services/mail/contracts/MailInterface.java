@@ -1,6 +1,9 @@
 package com.aondra.dashboard.services.mail.contracts;
 
 import java.util.Optional;
+
+import com.aondra.dashboard.services.mail.templating.factories.MailPartFactory;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -8,8 +11,6 @@ import java.util.List;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
-
-import com.aondra.dashboard.services.mail.MailPartFactorySet;
 
 public interface MailInterface
 {
@@ -23,5 +24,5 @@ public interface MailInterface
 
 	Optional<String> getSubject();
 
-	List<MimeBodyPart> getParts(MailPartFactorySet partFactories) throws IOException, MessagingException;
+	List<MimeBodyPart> getParts(MailPartFactory mailPartFactory) throws IOException, MessagingException;
 }
