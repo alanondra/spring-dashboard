@@ -3,8 +3,6 @@ package com.aondra.dashboard.services.mail.entities;
 import java.util.Objects;
 import java.io.UnsupportedEncodingException;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import jakarta.mail.internet.InternetAddress;
 
 public final class MailerDaemon
@@ -13,10 +11,8 @@ public final class MailerDaemon
 
 	private String email;
 
-	public MailerDaemon(
-		@Value("${mail.mailer.name}") String name,
-		@Value("${mail.mailer.email}") String email
-	) {
+	public MailerDaemon(String name, String email)
+	{
 		this.name = name;
 		this.email = email;
 	}

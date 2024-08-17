@@ -3,8 +3,6 @@ package com.aondra.dashboard.services.mail.entities;
 import java.util.Objects;
 import java.io.UnsupportedEncodingException;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import jakarta.mail.internet.InternetAddress;
 
 public final class Webmaster
@@ -13,10 +11,8 @@ public final class Webmaster
 
 	private String email;
 
-	public Webmaster(
-		@Value("${mail.webmaster.name}") String name,
-		@Value("${mail.webmaster.email}") String email
-	) {
+	public Webmaster(String name, String email)
+	{
 		this.name = name;
 		this.email = email;
 	}
